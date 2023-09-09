@@ -1,0 +1,50 @@
+{"u_data": [{
+    "prueba3@gmail.com": {
+        "password": "prueba",
+        "level": 1
+    },
+    "nuevo@nuevo.com": {
+        "password": "nuevo",
+        "level": 1
+    },
+    "prueba@prueba.com": {
+        "password": "prueba",
+        "level": 1
+    },
+    "new@gmail.com": {
+        "password": "12345",
+        "level": 1
+    },
+    "admin@admin.com": {
+        "password": "admin",
+        "level": 1
+    },
+    "tomas4@admin.com": {
+        "password": "admin",
+        "level": 1
+    },
+    "tomas3@admin.com": {
+        "password": "admin",
+        "level": 1
+    },
+    "tomas@admin.com": {
+        "password": "admin",
+        "level": 1
+    },
+    "person1@org.com": {
+        "password": "placeholder",
+        "level": 1
+    },
+    "dfsdf@gmail.com": {
+        "password": "12345",
+        "level": 1
+    },
+    "gato@gmail.com": {
+        "password": "gato",
+        "level": 1
+    },
+    "gato2@gmail.com": {
+        "password": "gato",
+        "level": 1
+    }
+}]}
