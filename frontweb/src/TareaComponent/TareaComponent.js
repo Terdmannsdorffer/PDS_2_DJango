@@ -77,17 +77,16 @@ function TareaComponent() {
                         height: '80%',
                         borderRadius: '0',
                         elevation: 20,
-                        position: 'fixed',
                         boxShadow:  '10px 10px 15px 0px rgba(33,33,33,.7)',
 
                     }}>
 
                         <EnunciadoComponent enunciado={enunciado}/>
 
-                        <RespuestaComponent respuestas={alternativas}/>
+
 
                     </Item2>
-
+                    <RespuestaComponent respuestas={alternativas}/>
 
                 </Stack>
 
