@@ -20,9 +20,16 @@ class Category(BaseModel):
 
     
 class Question(BaseModel):
+    DIFFICULTY_CHOICES = [
+        ('easy', 'Easy'),
+        ('medium', 'Medium'),
+        ('hard', 'Hard'),
+    ]
+
     question = models.CharField(max_length=1000)
     category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE)
     marks = models.IntegerField(default=0)
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='medium')
 
     def __str__(self):
         return self.question
