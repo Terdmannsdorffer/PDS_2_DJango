@@ -29,7 +29,7 @@ def get_quiz(request):
                 'question': question_obj.question,
                 'category': question_obj.category.category_name,
                 'marks': question_obj.marks,
-                'answers': question_obj.get_answers()
+                'answers': list(question_obj.get_answers())
                 
             })
         payload = {'status': True, 'data': data}
