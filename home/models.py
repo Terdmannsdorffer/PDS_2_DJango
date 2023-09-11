@@ -41,7 +41,7 @@ class Question(BaseModel):
         for answer_obj in answer_objs:
             data.append({
                 'answer': answer_obj.answer,
-                'is_correct': answer_obj.is_correct
+                # 'is_correct': answer_obj.is_correct
             })
         return data
 

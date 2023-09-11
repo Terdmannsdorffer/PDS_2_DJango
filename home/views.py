@@ -24,8 +24,7 @@ def get_quiz(request):
                 'category': question_obj.category.category_name,
                 'difficulty': question_obj.difficulty,
                 'marks': question_obj.marks,
-                'answers': question_obj.get_answers(),
-                
+                'answers': question_obj.get_answers()
                 
             })
         payload = {'status': True, 'data': data}
