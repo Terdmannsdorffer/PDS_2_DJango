@@ -10,13 +10,6 @@ import random
 def home(request):
     return render(request, "home/home.html")
 
-# {
-#     'status' : True
-#     'data':[
-#         {},
-#     ]
-# }
-
 def get_quiz(request):
     try:
         question_objs = list(Question.objects.all())
@@ -28,8 +21,10 @@ def get_quiz(request):
             data.append({
                 'question': question_obj.question,
                 'category': question_obj.category.category_name,
+                'difficulty': question_obj.difficulty,
                 'marks': question_obj.marks,
-                'answers': question_obj.get_answers()
+                'answers': question_obj.get_answers(),
+                
                 
             })
         payload = {'status': True, 'data': data}

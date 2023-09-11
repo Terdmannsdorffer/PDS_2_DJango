@@ -20,15 +20,22 @@ class Category(BaseModel):
 
     
 class Question(BaseModel):
+    DIFFICULTY_CHOICES = [
+        ('easy', 'Easy'),
+        ('medium', 'Medium'),
+        ('hard', 'Hard'),
+    ]
+
     question = models.CharField(max_length=1000)
     category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE)
     marks = models.IntegerField(default=0)
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='medium')
 
     def __str__(self):
         return self.question
     
     def get_answers(self):
-        answer_objs = Answer.objects.filter(question=self)
+        answer_objs = list(Answer.objects.filter(question=self))
         random.shuffle(answer_objs)
         data = []
         for answer_obj in answer_objs:
