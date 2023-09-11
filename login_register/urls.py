@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path("", include("home.urls")),
+    path("voltacademy/", include("voltacademy.urls")),
     path('admin/', admin.site.urls),
     path('login/', include('login.urls')),
     path('register/',include('register.urls'))
