@@ -117,6 +117,22 @@ function TareaComponent({token}) {
         }
     };
 
+    const handleNivelUsuario = (nivel) => {
+        let n = parseInt(nivel);
+        console.log(n);
+        let newNivel = n + 1;
+        console.log(newNivel);
+        setNivelUsuario(newNivel.toString());
+        setIsButtonVisible(true);
+        setEndOfQuiz(false);
+        setPreguntaActiva(0);
+        setQuestions([]);
+        setEnunciado({dibujo: false});
+        setAlternativas([]);
+        setUserAnswers([]);
+        setReansweredQuestions([]);
+    }
+
 
 
     function handleAnswerSubmission(answer){
@@ -178,6 +194,12 @@ function TareaComponent({token}) {
                                                   onReanswer={handleReanswer}
                                                   reansweredQuestions={reansweredQuestions}
                                 />
+
+
+
+                                <Button onClick={()=> handleNivelUsuario(nivelUsuario)} >Siguiente tarea</Button>
+
+
                             </div>
 
                         )}
