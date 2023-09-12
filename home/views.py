@@ -78,3 +78,22 @@ def check_answer(request):
             return JsonResponse({'is_correct': False, 'error': str(e)})
 
     return JsonResponse({'is_correct': False, 'error': 'Invalid request method'})
+
+
+def generate_math_question():
+    num1 = random.randint(1, 10)
+    num2 = random.randint(1000000, 1001000)
+    answer = (1.59*(10**-8))*(num2/(3.14*((num1/2)**2)))
+    rounded_answer = round(answer, 6)
+    question_text = f"Determine la resistencia de {num2} cm de alambre de plata que posee un diámetro de {num1} cm. Valores conocidos: - Resistividad de la Plata: p = 1.59 ∙ 10^(-8)Ωm Considere pi = 3.14 y redondear respuesta al quinto decimal ej:0.00081"
+
+    # Save the question to the database
+    question = MathQuestion(question=question_text, answer=rounded_answer)
+    question.save()
+
+    return question_text, rounded_answer
+
+def get_math_question(request):
+    question, answer = generate_math_question()
+    data = {'question': question, 'answer': answer}
+    return JsonResponse(data)

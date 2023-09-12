@@ -56,4 +56,13 @@ class Answer(BaseModel):
     def __str__(self):
         return self.answer
     
+
+
+class MathQuestion(BaseModel):
+    question = models.CharField(max_length=200)
+    answer = models.FloatField()
+
+    def __str__(self):
+        return self.question
+    
     
