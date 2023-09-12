@@ -41,7 +41,8 @@ class Question(BaseModel):
         for answer_obj in answer_objs:
             data.append({
                 'answer': answer_obj.answer,
-                # 'is_correct': answer_obj.is_correct
+                'is_correct': answer_obj.is_correct,
+                'explanation': answer_obj.explanation,
             })
         return data
 
@@ -50,8 +51,18 @@ class Answer(BaseModel):
     question = models.ForeignKey(Question,related_name='question_answer', on_delete=models.CASCADE)
     answer = models.CharField(max_length=200)
     is_correct = models.BooleanField(default=False)
+    explanation = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
         return self.answer
+    
+
+
+class MathQuestion(BaseModel):
+    question = models.CharField(max_length=200)
+    answer = models.FloatField()
+
+    def __str__(self):
+        return self.question
     
     
