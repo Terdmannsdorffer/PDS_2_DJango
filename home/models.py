@@ -50,6 +50,7 @@ class Answer(BaseModel):
     question = models.ForeignKey(Question,related_name='question_answer', on_delete=models.CASCADE)
     answer = models.CharField(max_length=200)
     is_correct = models.BooleanField(default=False)
+    explanation = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
         return self.answer
