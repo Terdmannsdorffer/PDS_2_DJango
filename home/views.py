@@ -87,13 +87,16 @@ def generate_math_question():
     rounded_answer = round(answer, 6)
     question_text = f"Determine la resistencia de {num2} cm de alambre de plata que posee un diámetro de {num1} cm. Valores conocidos: - Resistividad de la Plata: p = 1.59 ∙ 10^(-8)Ωm Considere pi = 3.14 y redondear respuesta al quinto decimal ej:0.00081"
 
+    category, created = Category.objects.get_or_create(category_name='1')
+
     # Save the question to the database
-    question = MathQuestion(question=question_text, answer=rounded_answer)
+    question = MathQuestion(question=question_text, answer=rounded_answer, category=category)
     question.save()
 
-    return question_text, rounded_answer
+    return question_text, rounded_answer, category
 
 def get_math_question(request):
-    question, answer = generate_math_question()
-    data = {'question': question, 'answer': answer}
+    has_image = False
+    question, answer, category = generate_math_question()
+    data = {'question': question, 'answer': answer, 'category': category.category_name, 'has_image': has_image}
     return JsonResponse(data)
