@@ -6,6 +6,7 @@ import EnunciadoComponent from "./EnunciadoComponent/EnunciadoComponent";
 import './TareaComponent.css';
 import RespuestaComponent from "./RespuestaComponent/RespuestaComponent";
 import axios from "axios";
+import SummaryComponent from "./SummaryComponent/SummaryComponent";
 
 
 
@@ -37,6 +38,8 @@ function TareaComponent({token}) {
     const [userAnswers, setUserAnswers] = useState([]);
     const [endOfQuiz, setEndOfQuiz] = useState(false);
     const [numPreguntas, setNumPreguntas] = useState(0);
+    const [reansweredQuestions, setReansweredQuestions] = useState([]);
+
 
 
     let categorias = {};
@@ -92,6 +95,28 @@ function TareaComponent({token}) {
             console.log(error);
         }
     };
+
+    const handleReanswer = (question, newAnswer) => {
+        // Find the index of the question in the questions array
+        const questionIndex = questions.findIndex(q => q.question === question.question);
+
+        // Update the userAnswers state with the new answer for the given question
+        if (questionIndex !== -1) {
+            const updatedAnswers = [...userAnswers];
+
+            for (let i = 0; i < question.answers.length; i++) {
+                if (question.answers[i].answer === newAnswer.answer) {
+                    if (question.answers[i].is_correct) {
+                        updatedAnswers[questionIndex] = true;
+                    }
+
+                }
+            }
+            setUserAnswers(updatedAnswers);
+            setReansweredQuestions(prev => [...prev, question]);
+        }
+    };
+
 
 
     function handleAnswerSubmission(answer){
@@ -149,7 +174,12 @@ function TareaComponent({token}) {
                             <div>
                                 <h1>End of quiz!</h1>
                                 <h2>Score: {userAnswers.filter(answer => answer).length}/{userAnswers.length}</h2>
+                                <SummaryComponent questions={questions} userAnswers={userAnswers}
+                                                  onReanswer={handleReanswer}
+                                                  reansweredQuestions={reansweredQuestions}
+                                />
                             </div>
+
                         )}
 
                         {isButtonVisible && (
