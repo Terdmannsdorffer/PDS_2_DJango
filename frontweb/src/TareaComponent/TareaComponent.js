@@ -1,11 +1,11 @@
-import React from "react";
-import {Box, Paper, styled} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {Box, Button, Paper, styled} from "@mui/material";
 import {Grid} from "@mui/joy";
 import Stack from '@mui/material/Stack';
 import EnunciadoComponent from "./EnunciadoComponent/EnunciadoComponent";
 import './TareaComponent.css';
 import RespuestaComponent from "./RespuestaComponent/RespuestaComponent";
-
+import axios from "axios";
 
 
 
@@ -24,34 +24,94 @@ const Item2 = styled(Paper)(({ theme }) => ({
     // transform: 'rotate(-1.5deg)',
 
 }));
-function TareaComponent() {
-    // Logica para agregar preguntas a la tarea
-    let enunciado = {
-        pregunta: "¿Cuál es la fórmula para la resistencia?",
-        dificultad: "Fácil",
-        tipo: "Alternativas",
-        dibujo: false
+function TareaComponent({token}) {
+    // eslint-disable no-unused-vars
+    const [preguntaActiva, setPreguntaActiva] = useState(0);
+    const [questions, setQuestions] = useState([]);
+    const [currentCategory, setCurrentCategory] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [nivelUsuario, setNivelUsuario] = useState('1');
+    const [isButtonVisible, setIsButtonVisible] = useState(true);
+    const [enunciado, setEnunciado] = useState({dibujo: false});
+    const [alternativas, setAlternativas] = useState([]);
+    const [userAnswers, setUserAnswers] = useState([]);
+    const [endOfQuiz, setEndOfQuiz] = useState(false);
+    const [numPreguntas, setNumPreguntas] = useState(0);
+
+
+    let categorias = {};
+
+    const handleNext = (answer) => {
+        // Save the user's answer
+
+
+        if (preguntaActiva < numPreguntas-1) {
+            setPreguntaActiva(preguntaActiva + 1);
+            let q = {
+                question: questions[preguntaActiva + 1].question ,
+                difficulty: questions[preguntaActiva + 1].difficulty  ,
+                category: questions[preguntaActiva + 1].category  ,
+                tipo: "Alternativas",
+                dibujo: false
+            };
+            setEnunciado(q);
+            setAlternativas(questions[preguntaActiva + 1].answers);
+        }
+        else {
+            setEndOfQuiz(true);
+        }
+    }
+
+    const handleClick = async () => {
+        setIsButtonVisible(false);
+        try {
+            const response = await fetch('http://localhost:9000/api/get-quiz/' + nivelUsuario + '/');
+            const json = await response.json();
+
+            console.log(json.data);
+            let np = 0;
+            let qs = [];
+            json.data.forEach(question => {
+                np += 1;
+                qs.push(question);
+            });
+            setQuestions(qs);
+            setNumPreguntas(np);
+            setPreguntaActiva(0);
+            let q = {
+                question: qs[preguntaActiva].question ,
+                difficulty: qs[preguntaActiva].difficulty  ,
+                category: qs[preguntaActiva].category  ,
+                tipo: "Alternativas",
+                dibujo: false
+            };
+            setEnunciado(q);
+            setAlternativas(qs[preguntaActiva].answers);
+
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    let alternativas = [
-        {
-            respuesta: "R = V/I",
-            correcta: true
-        },
-        {
-            respuesta: "R = I/V",
-            correcta: false
-        },
-        {
-            respuesta: "R = V+I",
-            correcta: false
-        },
-        {
-            respuesta: "R = I-V",
-            correcta: false
 
+    function handleAnswerSubmission(answer){
+
+        for (let i = 0; i < alternativas.length; i++) {
+            if (alternativas[i].answer === answer) {
+                if (alternativas[i].is_correct) {
+                    setUserAnswers([...userAnswers, true])
+                }
+                else {
+                    setUserAnswers([...userAnswers, false])
+                }
+            }
         }
-    ];
+
+        handleNext();
+
+    }
+
+
 
 
 
@@ -80,13 +140,27 @@ function TareaComponent() {
                         boxShadow:  '10px 10px 15px 0px rgba(33,33,33,.7)',
 
                     }}>
+                        {!endOfQuiz && !isButtonVisible && <div>Pregunta {preguntaActiva + 1} de {numPreguntas}</div>}
+                        {!endOfQuiz &&
 
-                        <EnunciadoComponent enunciado={enunciado}/>
 
+                            <EnunciadoComponent enunciado={enunciado}/>}
+                        {endOfQuiz && (
+                            <div>
+                                <h1>End of quiz!</h1>
+                                <h2>Score: {userAnswers.filter(answer => answer).length}/{userAnswers.length}</h2>
+                            </div>
+                        )}
 
+                        {isButtonVisible && (
+                            <Button variant="contained" onClick={handleClick}>
+                                Start
+                            </Button>
+                        )}
 
                     </Item2>
-                    <RespuestaComponent respuestas={alternativas}/>
+                    {!endOfQuiz &&
+                    <RespuestaComponent respuestas={alternativas} onAnwerSelected={handleAnswerSubmission}/>}
 
                 </Stack>
 

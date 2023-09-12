@@ -12,7 +12,6 @@ function EnunciadoComponent({enunciado}) {
     // Logica para agregar preguntas a la tarea
 
 
-    enunciado.dibujo = true;
     let dibujo = {  "type": "CircuitDiagram",
         "components": [
             {
@@ -46,11 +45,11 @@ function EnunciadoComponent({enunciado}) {
                             <CircuitDiagramComponent data={dibujo}/>
                         </Box>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} position={'relative'}>
-                            {enunciado.pregunta}
+                            {enunciado.question}
                         </Typography></>
 
                         : <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} position={'relative'}>
-                            {enunciado.pregunta}
+                            {enunciado.question}
                         </Typography>
                 }
             </div>

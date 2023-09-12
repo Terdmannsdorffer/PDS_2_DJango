@@ -23,7 +23,7 @@ const Button2 = styled(Button)(({ theme }) => ({
 
 }));
 
-function RespuestaComponent({respuestas}) {
+function RespuestaComponent({respuestas, onAnwerSelected}) {
 
     // let respuestas = [ '1', '2', '3', '4'];
     const buttons = [
@@ -34,7 +34,8 @@ function RespuestaComponent({respuestas}) {
     ];
 
 
-
+    // Shuffle respuestas
+    respuestas.sort(() => Math.random() - 0.5);
 
 
     return (
@@ -51,7 +52,8 @@ function RespuestaComponent({respuestas}) {
                             <Button key={buttons[index].label} className="RespuestaButton" variant="contained"
                                     sx={{position: 'absolute',
                                         ...buttons[index].position}}
-                            >{respuesta.respuesta}</Button>
+                                    onClick={() => onAnwerSelected(respuesta.answer)}
+                            >{respuesta.answer}</Button>
 
                     ))}
 
