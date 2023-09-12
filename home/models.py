@@ -59,8 +59,11 @@ class Answer(BaseModel):
 
 
 class MathQuestion(BaseModel):
+    category = models.ForeignKey(Category, related_name='math_questions', on_delete=models.CASCADE)
     question = models.CharField(max_length=200)
     answer = models.FloatField()
+    has_image = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.question
